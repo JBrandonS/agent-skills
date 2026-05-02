@@ -48,6 +48,25 @@ Always read both templates before editing:
 - Dramatically change section names or bullet meaning
 - Use em dashes
 
+## Pre-Adaptation Fit Check
+
+Before adapting anything, evaluate whether the ground-truth resume (`resume_25.tex`) is a reasonable match for the job posting.
+
+1. Read the job posting and extract key requirements (skills, experience level, domain knowledge, must-haves).
+2. Cross-reference against `resume_25.tex` — check for:
+   - **Required skills overlap:** Are most must-have skills present in the resume?
+   - **Experience level match:** Does the seniority align (e.g., entry-level vs 7+ years)?
+   - **Domain relevance:** Is the field/domain reasonable (e.g., ML, data engineering, systems)?
+   - **Red flags:** Any glaring gaps that would make the application look desperate or mismatched (e.g., job requires 10 years Java and the resume has zero Java).
+
+**Decision rule:**
+- If there is strong overlap in skills, experience level, and domain → proceed with adaptation.
+- If there are major gaps (e.g., core required skill entirely absent, seniority mismatch, or domain is completely unrelated) → **stop and ask the user** whether to proceed anyway. Present a brief summary of what matches and what is missing.
+
+Example prompt to user if bad match:
+
+> The job requires [X] and [Y], but your resume shows no experience in those areas. Your strongest matches are [A] and [B]. Do you still want me to proceed with the application?
+
 ## Workflow
 
 1. **Read the job posting** — extract main requirements, keywords, and desired skills.
