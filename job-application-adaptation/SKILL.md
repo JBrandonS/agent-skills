@@ -9,6 +9,8 @@ Create tailored resume and cover letter PDFs from base CV templates for a given 
 
 ## Prerequisites
 
+Before you begin read in the following files. This MUST be done prior to do anything else.
+
 - Base CV templates at `~/git/CV/`:
   - `resume_25.tex` — canonical source of factual content
   - `resume_25_engineering.tex` — starting template with allowed light reframing
@@ -109,3 +111,15 @@ Before building, verify:
 ## Practical Rule
 
 When in doubt, err on the side of conservatism. The resume should look like Brandon Stevenson's actual resume, just with emphasis shifted toward the target role.
+
+## Job Posting Extraction
+
+LinkedIn job postings require special handling due to sign-in walls. See `references/linkedin-extraction.md` for the extraction technique.
+
+## Resume Length
+
+Keep resumes to 2 pages maximum. If compilation produces 3+ pages:
+- Shorten bullet points (remove redundant words, merge related items)
+- Tighten skills descriptions (use abbreviations like "C/C++" instead of "C, C++")
+- Reduce section spacing (adjust `\titlespacing` values if needed)
+- Minor overfull hbox warnings are acceptable; major ones (>20pt) should be fixed by breaking long lines.

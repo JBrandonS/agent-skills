@@ -1,6 +1,6 @@
 ---
 name: deduplicate
-description: A skill for identifying and refactoring duplicate code across a codebase. Use this skill when you want to improve code maintainability and reduce technical debt by consolidating similar code patterns into reusable components. This skill should only be used when explicitly asked for, if the user asks to refactor code ask if they want to deduplicate the code too, as it can be risky, time and token consuming and may introduce bugs if not done carefully.
+description: A skill for identifying and refactoring duplicate code across a codebase. Use this skill when you want to improve code maintainability and reduce technical debt by consolidating similar code patterns into reusable components. This skill should only be used when explicitly asked for, if the user asks to refactor code or ask if they want to deduplicate the code. It is risky, time intensive and token consuming. It may introduce bugs if not done carefully.
 ---
 
 # Deduplication Skill
@@ -21,25 +21,22 @@ Use this skill when:
 
 ## Prerequisites
 
-- **jscpd**: A tool for detecting duplicate code. Ensure you have jscpd installed and configured to analyze your codebase.
 - **jscpd skill**: A skill that integrates with jscpd to facilitate the deduplication process.
-  - If either are not found, offer to install them:
-    - For the main tool: `npm install -g jscpd`
-    - For the skill: `npx skills add kucherenko/jscpd`
+  - If either this is not found, offer to install it: `npx skills add kucherenko/jscpd`
   - GitHub repo: `https://github.com/kucherenko/jscpd`
-- **Version control**: All work should be in a version-controlled repository (git, etc.) to enable reverting changes if refactoring introduces regressions
+- **Version control**: All work should be in a git worktree to enable reverting changes if refactoring introduces regressions
 
 ## Workflow
 
-**Overview**: Break down the deduplication process into manageable steps to ensure a systematic approach:
-0. Split workflow into steps
-1. Identify duplicates using jscpd
-2. Review duplicates for refactoring candidates
-3. Refactor code into shared components
-4. Test changes thoroughly
-5. Abstract common logic patterns
-6. Document the refactor
-7. Iterate and continuous improvement
+**Overview**: Break down the deduplication process into manageable steps to ensure a systematic approach, you may want to add these to the TODO list as well to keep track of progress and ensure that you don't miss any important steps. This prevents making too many changes at once and helps isolate the impact of each refactoring.:
+  0. Split workflow into steps
+  1. Identify duplicates using jscpd
+  2. Review duplicates for refactoring candidates
+  3. Refactor code into shared components
+  4. Test changes thoroughly
+  5. Abstract common logic patterns
+  6. Document the refactor
+  7. Iterate and continuous improvement
 
 ---
 
@@ -225,7 +222,7 @@ class ProductManager extends EntityManager<Product> {}
 
 ### 4. Test Changes
 
-After refactoring, ensure that all tests pass and that the functionality remains intact. This step is crucial to maintain the integrity of the codebase after changes.
+After refactoring, ensure that all tests pass and that the functionality remains intact. This step is crucial to maintain the integrity of the codebase after changes. You may want to use the `tdd` skill to assist in writing and running tests for the refactored code.
 
 **Details:**
 
@@ -428,8 +425,8 @@ Repeat the process as needed to continuously improve the codebase and reduce tec
 
 ## Related Skills
 
-- **code-knowledge**: Use to understand code structure and identify duplicates across the codebase. Index will need to updated and retrained after deduplication to reflect the new structure of the codebase, and to ensure that future searches return accurate results.
+- **code-knowledge**: Use to understand code structure and identify duplicates across the codebase. Index will need to updated and retrained after deduplication to reflect the new structure of the codebase, and to ensure that future searches return accurate results. Be sure to load have this in context before starting.
 - **tdd**: Use when writing tests for deduplication to ensure correctness
+- **code-reusability**: For refactoring code to be more reusable, which often goes hand in hand with deduplication. After identifying duplicates, you may want to apply code-reusability principles to create shared components that can be reused across the codebase, further reducing duplication and improving maintainability.
 - **improve-codebase-architecture**: For broader refactoring beyond just deduplication, once deduplication has been addressed ask if the user would like to improve the codebase architecture as well, as they often go hand in hand.
-- **jscpd**: Direct integration with the duplicate detection tool
 

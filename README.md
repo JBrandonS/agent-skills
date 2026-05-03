@@ -18,6 +18,10 @@ The Code Coverage Skill is designed to help developers analyze and improve test 
 
 The Deduplication Skill is designed to help developers identify and refactor duplicate code across a codebase. By consolidating similar code patterns into reusable components, this skill aims to improve code maintainability and reduce technical debt. Duplicate code increases maintenance burden, introduces inconsistencies, and makes it harder to implement bug fixes consistently across the application.
 
+### 🔒 Systemd Inhibit Long-Running (`systemd-inhibit-long-running`)
+
+Prevents the system from sleeping or suspending during long-running commands (compilations, test suites, data pipelines) using `systemd-inhibit`. Wraps commands in an inhibition block that is automatically released when the command exits. Normal users can inhibit sleep and idle actions — no root required.
+
 ---
 
 ## 🛠 Prerequisites & Dependencies

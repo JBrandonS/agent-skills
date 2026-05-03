@@ -493,7 +493,7 @@ def log_debug(msg):
 
 ## Related Skills
 
-- **code-knowledge**: Use to understand code structure and identify areas lacking tests. Index will need to be updated and retrained after adding tests to reflect the new structure of the codebase, and to ensure that future searches return accurate results.
+- **code-knowledge**: Use to understand code structure and identify areas lacking tests. Index will need to be updated and retrained after adding tests to reflect the new structure of the codebase, and to ensure that future searches return accurate results. Be sure to load have this in context before starting.
 - **deduplicate**: Use to identify and refactor duplicate code, which can improve testability and reduce the amount of code that needs to be covered by tests.
 - **tdd**: Use when writing tests alongside code (red-green-refactor)
 - **diagnose**: Use when identifying why code is untested or difficult to test

@@ -5,7 +5,7 @@ description: A skill for understanding and modifying codebases using a combinati
 
 # Code Knowledge Skill 
 
-Orchestrates semantic discovery (opencode-codebase-indexer) and structural execution (Serena).
+Orchestrates semantic discovery (opencode-codebase-indexer) and structural execution (Serena). All code has been indexed by the codebase indexer plugin and serna for this skill to work effectively. Do not read entire files unless absolutely necessary. Instead, use the tools at your disposal to navigate and understand the codebase efficiently.
 
 ## Prerequisites
 - Access to the codebase indexer plugin (opencode-codebase-index) for semantic search.
@@ -34,3 +34,6 @@ Orchestrates semantic discovery (opencode-codebase-indexer) and structural execu
 - **Rule 1**: Never `cat` a whole file if `get_symbols_overview` provides enough context.
 - **Rule 2**: Use `codebase_peek` for initial exploration to keep the context window lean.
 - **Rule 3**: Rely on Serena for symbol lookups to avoid hallucinated signatures.
+
+## 5. Known Build Pitfalls
+See `references/typescript-build-troubleshooting.md` for common TypeScript build issues (TS5101 baseUrl deprecation, dynamic JSX components, .gitignore directory conflicts).
