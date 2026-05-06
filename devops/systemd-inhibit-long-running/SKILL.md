@@ -134,3 +134,22 @@ systemd-inhibit --what=sleep:idle --why="Reason" <command>
 # Interactive mode (keeps inhibit alive until you Ctrl+C)
 systemd-inhibit --what=sleep --interactive --why="My task"
 ```
+
+## Creating systemd --user Services
+
+For services that should start on login, use `systemd --user`:
+
+1. Create the service file: `~/.config/systemd/user/<name>.service` (see `templates/user-service.service`)
+2. Reload: `systemctl --user daemon-reload`
+3. Enable: `systemctl --user enable <name>.service`
+4. Start: `systemctl --user start <name>.service`
+5. Check status: `systemctl --user status <name>.service`
+
+**Pitfalls:**
+- Always verify the binary path and flags with `which <binary>` and `<binary> --help` before creating the service — failures only surface at runtime (exit code 1).
+- Use `ExecStart=/absolute/path/to/binary` — relative paths may not resolve correctly.
+- `WantedBy=default.target` is the correct target for user services to start on login.
+
+## References
+
+- `templates/user-service.service` — Template for creating systemd --user service files
