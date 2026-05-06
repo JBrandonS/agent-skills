@@ -1,0 +1,14 @@
+[Unit]
+Description=<SERVICE_NAME>
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=<FULL_PATH_TO_BINARY> <ARGS>
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
