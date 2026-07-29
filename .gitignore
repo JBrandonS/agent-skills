@@ -1,1 +1,22 @@
-.*/
+# Dotfile / dot-dir stubs that git sees as tracked but are empty placeholders
+.bash_profile
+.bashrc
+.env
+.gitconfig
+.gitmodules
+.idea
+.mcp.json
+.profile
+.ripgreprc
+.vscode
+.zprofile
+.zshrc
+
+# Editor and tool caches — local state, not shared
+.history/
+.serena/
+**/.serena/
+
+# Keep pi extensions (project-local plugin code) and their docs — unignore everything under .pi/extensions/
+!.pi/extensions/
+!.pi/**
