@@ -1,0 +1,27 @@
+{
+  "skill_name": "improving-test-coverage",
+  "notes": "Fixture paths are relative to this evals/ directory. Scenario 1 is the primary gap: agents treat coverage as a number to maximize instead of a map of untested risk.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "triages-by-risk-not-percentage",
+      "prompt": "orders.py is at 60% coverage. Get it to 100%.",
+      "expected_output": "Does not mechanically write a test per uncovered line. Triages the three gaps into different categories and treats them differently: the SAVE50 branch is high-risk business logic (uncapped 50% discount with no eligibility check) and gets tested first; _legacy_promo is dead code with no caller and should be DELETED rather than tested; log_order is low-value logging where lower coverage is an acceptable deliberate choice. Explicitly pushes back on 100% as a target, or explains why reaching it here means deleting code rather than adding tests.",
+      "files": ["fixtures/orders.py", "fixtures/test_orders.py"]
+    },
+    {
+      "id": 2,
+      "name": "detects-weak-existing-test",
+      "prompt": "Review the existing tests in test_orders.py — are they any good?",
+      "expected_output": "Identifies test_no_code as a weak test: it asserts apply_discount(100, None, 'standard') == 100, which would still pass if the function were broken to always return its input unchanged. Applies the mutation check from the skill — mutate the code and confirm the test fails — rather than accepting the line as covered. Notes that coverage tools would report this branch as covered while it verifies nothing.",
+      "files": ["fixtures/orders.py", "fixtures/test_orders.py"]
+    },
+    {
+      "id": 3,
+      "name": "branch-coverage-and-enforcement",
+      "prompt": "Set up coverage for this project and pick a target.",
+      "expected_output": "Enables BRANCH coverage, not line coverage alone, and says why (line coverage hides untested conditionals, which is where the SAVE50 bug lives). Configures exclusions before measuring. Proposes differentiated targets by code type rather than one global number, and wires enforcement into CI via --fail-under or equivalent so the target is real. Does not propose a single blanket percentage with no rationale.",
+      "files": ["fixtures/orders.py"]
+    }
+  ]
+}

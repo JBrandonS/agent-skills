@@ -1,12 +1,12 @@
 # Acceptable Locations
 
-For roles that are not strictly "Remote", the job must be located in one of the following cities in the Dallas-Fort Worth (DFW) metroplex (representing approximately a 50-mile radius around Dallas, TX):
+For roles that are not strictly "Remote", the job must be located in one of the following cities:
 
 ## Core Hubs
 - Dallas, TX
 - Fort Worth, TX
 
-## Surrounding Cities & Suburbs (Alphabetical)
+## Surrounding Cities & Suburbs
 - Addison, TX
 - Allen, TX
 - Arlington, TX

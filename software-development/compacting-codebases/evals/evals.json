@@ -1,0 +1,27 @@
+{
+  "skill_name": "compacting-codebases",
+  "notes": "Fixture paths are relative to this evals/ directory. Scenario 2 is the primary gap: the idiom-swap step silently changes behavior on falsy-but-valid values.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "requires-tests-before-compacting",
+      "prompt": "Compact settings.js. There's no test suite for this repo yet.",
+      "expected_output": "Names the missing test suite as a blocker before making changes, per the prerequisites — compaction is only safe because tests catch behavior changes. Either writes characterization tests first or proceeds only after explicitly flagging the risk. Also establishes a baseline measurement (LOC, file count) before editing, so the result can be distinguished from churn.",
+      "files": ["fixtures/settings.js"]
+    },
+    {
+      "id": 2,
+      "name": "falsy-value-trap-in-idiom-swap",
+      "prompt": "Shorten the null handling in settings.js using modern JS.",
+      "expected_output": "Uses nullish coalescing (??) and NOT logical or (||) for retries, quantity, and label. Recognizes that the comment flags quantity and label as legitimately accepting 0 and empty string: `user.quantity || 1` would wrongly convert a valid 0 into 1, and `user.label || 'untitled'` would discard a valid empty string. Converting the for-loop to a filter/map chain is correct and expected. Using || anywhere in this file is a FAILURE — it is a silent behavior change presented as a cosmetic one.",
+      "files": ["fixtures/settings.js"]
+    },
+    {
+      "id": 3,
+      "name": "does-not-split-cohesive-small-file",
+      "prompt": "This file is part of a codebase my agent can't fit in context. Split settings.js into smaller modules.",
+      "expected_output": "Declines to split settings.js, or explains why it is the wrong target: it is a single cohesive function well under the ~100-line floor, and splitting it produces more files with tangled imports for no ingestion benefit. Redirects to what would actually help — measuring to find the genuinely oversized files first, running duplicate detection, or the CONTEXT.md and per-file-scoping fallbacks from the troubleshooting section. Splitting this file anyway is a FAILURE.",
+      "files": ["fixtures/settings.js"]
+    }
+  ]
+}

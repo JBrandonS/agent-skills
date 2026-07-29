@@ -10,8 +10,12 @@ Counts occurrences of high-frequency AI words in text blocks. Works across eras.
 # Single-file scan (case-insensitive)
 rg -ioP '(delve|tapestry|testament|meticulous|pivotal|crucial|intricate|boasts?|garner|bolster|underscores?|showcases?|fostering|enhances?|vibrant|valuable|enduring|align with|landscape)' FILE | wc -l
 
-# Count per paragraph
-rg -P '^\s*$' --multiline-dotall -N -A 0 FILE | grep -oiP '(delve|tapestry|testament|...' | wc -l
+# Count per paragraph — prints "<count> <first line of paragraph>" for any
+# paragraph containing 2+ AI words, which is where the real signal lives.
+awk -v RS='' '{
+  n = gsub(/[Dd]elve|[Tt]apestry|[Tt]estament|[Mm]eticulous|[Pp]ivotal|[Cc]rucial|[Ii]ntricate|[Bb]oasts?|[Gg]arner|[Bb]olster|[Uu]nderscores?|[Ss]howcases?|[Ff]ostering|[Ee]nhances?|[Vv]ibrant|[Ee]nduring/, "&")
+  if (n >= 2) { split($0, l, "\n"); print n, l[1] }
+}' FILE
 ```
 
 **Threshold:** 2+ words in a single paragraph = mild signal. 3+ words = strong signal. Co-occurring words from different eras (e.g., "delve" + "showcasing") is very strong signal — those word sets rarely appear together naturally.

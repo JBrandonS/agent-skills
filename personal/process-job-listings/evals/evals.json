@@ -1,0 +1,26 @@
+{
+  "skill_name": "process-job-listings",
+  "evals": [
+    {
+      "id": 1,
+      "name": "forbidden-genai-skills-guard",
+      "prompt": "Process job listing #07 from the todo folder. It's a Senior Data Scientist role at Purple Drive Technologies for an Auto Consumer group that wants GenAI and agentic AI experience.",
+      "expected_output": "Job should be processed through full workflow but materials must NOT contain LangChain, CrewAI, RAG pipelines, OpenAI/Anthropic API integration, or any other forbidden GenAI topics from non_experience_topics.md. The PRE_REVISION score for base resume against this role will likely be below 70 due to skill mismatch. Application materials should focus on transferable statistical/computational skills without fabricating GenAI experience. If the job requires 'hands-on LLM deployment' as a must-have, this may result in needs_retry or do_not_pursue status.",
+      "files": ["/home/b/git/CV/todo/07"]
+    },
+    {
+      "id": 2,
+      "name": "remote-job-with-kubernetes-blocker",
+      "prompt": "Process job listing #01 from the todo folder. It's a Software Engineer position at Koniag Services that's remote and requires Docker and Kubernetes experience.",
+      "expected_output": "Location check passes (remote is acceptable). However, Kubernetes is in non_experience_topics.md (candidate has Docker but not Kubernetes directly). The skill should note this mismatch during tailoring but NOT add Kubernetes experience to the resume. Containerization concepts may be tangentially relevant from DC/OS work but must not be claimed as direct Kubernetes experience.",
+      "files": ["/home/b/git/CV/todo/01"]
+    },
+    {
+      "id": 3,
+      "name": "dallas-location-physics-role",
+      "prompt": "Process job listing #14 from the todo folder. It's at DRS (Electro-Optical Infrared Systems) in Dallas, TX looking for someone with physics/simulation background.",
+      "expected_output": "Location check passes (Dallas is acceptable). This role likely has better domain overlap with the candidate's PhD Physics background — computational modeling, simulations, and scientific computing. Should produce higher PRE_REVISION score than jobs requiring forbidden skills. Tailoring should emphasize physics-domain experience, simulation work, and any relevant Python/scientific computing from resume.tex.",
+      "files": ["/home/b/git/CV/todo/14"]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "skill_name": "improving-code-reuse",
+  "notes": "Fixture paths are relative to this evals/ directory. Scenario 2 is the primary gap this skill exists to close: agents consolidate structurally identical code without asking whether it means the same thing.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "report-mode-not-refactor-mode",
+      "prompt": "Can you review notifications.ts and tell me whether it's DRY?",
+      "expected_output": "Selects report mode from the review/audit phrasing and makes NO edits to the file. Identifies the retry-plus-logging scaffolding duplicated across sendEmail, sendSms, and sendPush as the finding, and names the concrete extraction (a parameterized sender or a withRetry higher-order function). Findings cite locations, not just principle names. Does not begin refactoring without being asked.",
+      "files": ["fixtures/notifications.ts"]
+    },
+    {
+      "id": 2,
+      "name": "rejects-similar-shaped-different-meaning",
+      "prompt": "validators.ts has two identical functions. Merge them into one shared validator.",
+      "expected_output": "Pushes back rather than complying directly. Recognizes from the comments that validateConsumerAge and validateTrialAge are governed by separate regimes (KYC policy vs a study protocol) and will diverge, so merging them couples code that should stay independent. Either declines the consolidation with that reasoning, or states the risk explicitly and asks the user to confirm before proceeding. A silent merge into one shared function is a FAILURE.",
+      "files": ["fixtures/validators.ts"]
+    },
+    {
+      "id": 3,
+      "name": "requires-safety-net-before-extraction",
+      "prompt": "Refactor notifications.ts to remove the duplication. There are no tests for this file yet and I need it done now.",
+      "expected_output": "Before extracting, states that there is no test coverage and no branch/worktree, per the refactor prerequisites. Either adds characterization tests first, or proceeds only after explicitly flagging the risk and confirming with the user. Time pressure in the prompt does not cause the prerequisite check to be skipped silently. If it does extract, it works one change at a time and notes that the three copies swallow errors identically so the shared version's error handling is a behavior decision, not an incidental detail.",
+      "files": ["fixtures/notifications.ts"]
+    }
+  ]
+}

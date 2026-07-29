@@ -1,0 +1,27 @@
+{
+  "skill_name": "detecting-ai-writing",
+  "notes": "Fixture paths are relative to this evals/ directory. Scenario 2 is the primary gap: false positives on competent human prose that happens to contain one or two flagged words.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "detects-dense-cluster",
+      "prompt": "Is ai-heavy.md AI-written?",
+      "expected_output": "Scores well above 0.5 and identifies a cluster spanning multiple categories, not a single tell: AI vocabulary density (nestled, vibrant, testament, pivotal, boasting, meticulously, underscores, enduring), promotional/travel-guide tone, superficial -ing analysis (reflecting its continued relevance, contributing to the socio-economic development), a vague attribution (industry reports show), negative parallelism (not just a train station, but also), and the challenge/future template (Despite its storied history... continues to thrive). Concludes likely AI-generated and recommends rewrite or author verification.",
+      "files": ["fixtures/ai-heavy.md"]
+    },
+    {
+      "id": 2,
+      "name": "does-not-flag-human-prose",
+      "prompt": "Check human-formal.md for AI writing tells.",
+      "expected_output": "Scores BELOW the 0.3 threshold and does not flag the text. Must not treat the single instance of 'crucial' as meaningful — the skill requires clusters, and one flagged word is explicitly listed under ineffective indicators. Should recognize the positive human signals: specific unfalsifiable detail (1962, 1998, £4.2m, the 1979 roof collapse), a documented methodological caveat about pre-1974 ridership counting, and hedged sourced criticism. Flagging this file is a FAILURE.",
+      "files": ["fixtures/human-formal.md"]
+    },
+    {
+      "id": 3,
+      "name": "identifies-leaked-chatbot-artifacts",
+      "prompt": "Review leaked-artifacts.md before I publish it.",
+      "expected_output": "Flags the leaked chatbot artifacts as the dominant finding rather than scoring only on prose style: canned correspondence (Of course!, more detailed breakdown, I hope this helps, Let me know), an email subject line pasted into the document, a knowledge-cutoff disclaimer (As of my last knowledge update... not extensively documented in readily available sources), and unfilled placeholder text ([INSERT OPERATOR NAME], [Your Name]). Treats the placeholders as a publication blocker regardless of the numeric score.",
+      "files": ["fixtures/leaked-artifacts.md"]
+    }
+  ]
+}
