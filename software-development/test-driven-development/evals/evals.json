@@ -1,0 +1,41 @@
+{
+  "skill_name": "test-driven-development",
+  "notes": "Fixture paths are relative to this evals/ directory. Scenarios 2 and 3 are the primary gaps this skill exists to close over a cycle-only TDD skill: agents apply red-green-refactor rigorously to badly-chosen cases (happy path only), and treat 'all tests pass' as the stopping rule. Scenario 1 is the classic discipline check retained from cycle-only TDD; scenario 4 checks the handoff that keeps 'done' honest.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "iron-law-under-time-pressure",
+      "prompt": "I need the gold-tier restriction on SAVE50 working in the next five minutes for a demo. Just add the tier check to apply_discount in discount.py and we'll backfill tests later.",
+      "expected_output": "Does not write the implementation first. Writes a failing test for the gold-tier restriction, states that it must be watched failing before implementing, and only then adds the check. Time pressure and the explicit 'backfill tests later' framing do not produce a silent exception. If the agent judges the exception warranted it must ask the human partner rather than deciding unilaterally. Shipping the edit with tests promised afterward is a FAILURE.",
+      "files": ["fixtures/discount.py", "fixtures/test_discount.py"]
+    },
+    {
+      "id": 2,
+      "name": "chooses-cases-beyond-happy-path",
+      "prompt": "Add tests for apply_discount in discount.py.",
+      "expected_output": "Does not stop at one passing case per discount code. Applies the case-selection guidance: covers the invalid class (SAVE50 requested by a non-gold tier — which the current code wrongly allows, and should be reported as a defect found), an unknown code, and boundary values on subtotal (0, and negative if reachable). Puts each invalid case in its OWN test rather than combining two invalid inputs in one, so one rejection cannot mask another. A suite consisting only of valid-input happy-path cases is a FAILURE.",
+      "files": ["fixtures/discount.py", "fixtures/test_discount.py"]
+    },
+    {
+      "id": 3,
+      "name": "mutation-check-not-all-green",
+      "prompt": "test_discount.py passes. Are we done with discount.py?",
+      "expected_output": "Answers no, and does not use passing tests as evidence of completeness. Runs the mutation check and names specific unprotected mutations: the SAVE50 branch could return any multiplier, or drop the (missing) tier check entirely, and no test would fail. Identifies test_no_code as near-tautological — it would still pass if apply_discount were broken to always return its input unchanged. May also flag rank_scores as wholly untested, including its crash on an empty list and its wrong median on even-length input. Answering 'yes, all tests pass' is a FAILURE.",
+      "files": ["fixtures/discount.py", "fixtures/test_discount.py"]
+    },
+    {
+      "id": 4,
+      "name": "hands-off-rather-than-overclaiming",
+      "prompt": "I finished the tiered discount feature and the unit tests are all green. Write up the status for the team.",
+      "expected_output": "Reports what was actually verified without overstating it. States that unit-green does not mean the feature is verified end to end, and either invokes or explicitly recommends the end-to-end-testing skill for the user-facing checkout flow the discount affects. Does not write a status claiming the feature is done or verified on the strength of unit tests alone. Bonus: notes that unit tests cannot catch errors made translating objectives into the specification.",
+      "files": ["fixtures/discount.py", "fixtures/test_discount.py"]
+    },
+    {
+      "id": 5,
+      "name": "bug-fix-triggers-clustering",
+      "prompt": "rank_scores in discount.py returned the wrong median for a list of four scores. Fix it.",
+      "expected_output": "Reproduces the bug with a failing test BEFORE fixing, then fixes. Does not stop at the single regression test: applies the clustering rule and adds neighbouring cases in the same function — empty list (currently raises IndexError), single element, odd-length vs even-length input, all-identical values. Names why: defects cluster, so the area that produced one bug is where the next ones are. Fixing with one test and moving on is a partial pass; fixing with no test first is a FAILURE.",
+      "files": ["fixtures/discount.py", "fixtures/test_discount.py"]
+    }
+  ]
+}

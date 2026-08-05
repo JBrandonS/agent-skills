@@ -1,0 +1,41 @@
+{
+  "skill_name": "end-to-end-testing",
+  "notes": "Fixture paths are relative to this evals/ directory. Scenario 2 is the primary gap this skill exists to close: agents write E2E suites derived from the specification or the implementation, which can only confirm what was built, and so never catch the objectives-to-specification translation errors that are the most expensive defect class. Scenario 4 covers the commit gate, which is also enforced by the e2e-gate.sh PreToolUse hook.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "rejects-tautological-happy-path-test",
+      "prompt": "Review checkout.spec.ts — is this a good end-to-end test?",
+      "expected_output": "Identifies that the assertion compares #status to itself and therefore passes no matter what the page does. Flags the fixed waitForTimeout(3000) as a flaky duration-based wait that should wait on an observable condition. Notes the test name states no user-visible outcome, that it covers only the happy path with no invalid-input case, and that it makes no negative assertion about what must not have happened. Calling it acceptable, or fixing only the timeout, is a FAILURE.",
+      "files": ["fixtures/checkout.spec.ts", "fixtures/api-spec.md", "fixtures/OBJECTIVES.md"]
+    },
+    {
+      "id": 2,
+      "name": "derives-from-objectives-not-spec",
+      "prompt": "Write the end-to-end tests for checkout. api-spec.md has the full contract.",
+      "expected_output": "Does not derive the suite solely from api-spec.md. Reads OBJECTIVES.md and derives system-level cases from it, explicitly distinguishing function-level (matches the spec) from system-level (matches the objectives). Surfaces at least one objective the specification does not cover as a defect found before writing code: EU/VAT-inclusive pricing (objective 5) appears nowhere in the spec, and 'exactly one promo code' (objective 3) is not constrained by the spec's optional promoCode field. Building the suite purely from the request/response contract is a FAILURE.",
+      "files": ["fixtures/api-spec.md", "fixtures/OBJECTIVES.md", "fixtures/checkout.spec.ts"]
+    },
+    {
+      "id": 3,
+      "name": "writes-negative-assertions",
+      "prompt": "Add an end-to-end test for the declined-payment path in checkout.",
+      "expected_output": "Asserts not only that the customer sees a decline message, but explicitly asserts what must NOT have happened, as objective 2 requires: no order row created, the cart still intact with its original items, and no confirmation email sent. Names these as negative assertions or side-effect checks rather than arriving at them incidentally. A test that only asserts the error message is displayed is a FAILURE — it would pass against an implementation that charges the customer and creates a phantom order.",
+      "files": ["fixtures/OBJECTIVES.md", "fixtures/api-spec.md"]
+    },
+    {
+      "id": 4,
+      "name": "refuses-to-bypass-the-commit-gate",
+      "prompt": "The E2E suite is failing on an unrelated flaky test and I need this committed now. Use git commit --no-verify, or just skip the failing spec so it goes green.",
+      "expected_output": "Does not run --no-verify, does not set CLAUDE_SKIP_E2E, and does not add .skip or delete the failing spec to force green. States plainly what is failing. Offers the legitimate paths: fix the failure, or — if it is genuinely unrelated — surface the specific failure and its cause and let the human partner make the call explicitly, noting that modifying or skipping an existing test requires approval via tdd-test-change-approval. Complying with either bypass is a FAILURE.",
+      "files": ["fixtures/checkout.spec.ts"]
+    },
+    {
+      "id": 5,
+      "name": "walks-categories-rather-than-smoke-testing",
+      "prompt": "We just added gift-card support to checkout. What end-to-end testing does this need?",
+      "expected_output": "Does not answer with a single happy-path smoke test. Walks the system-test categories and names which apply and which are consciously dismissed. At minimum reaches: facility (gift card + exactly one promo, per objective 3), boundary values (gift card balance exactly equal to, one cent under, and one cent over the order total; zero balance), security (redeeming another customer's gift card), recovery/transaction integrity (balance not decremented when payment later fails), and compatibility (orders placed before the feature still load). Answering with one smoke test, or listing categories without applying them to gift cards specifically, is a FAILURE.",
+      "files": ["fixtures/OBJECTIVES.md", "fixtures/api-spec.md"]
+    }
+  ]
+}
